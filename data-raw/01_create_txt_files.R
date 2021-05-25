@@ -38,6 +38,10 @@ colnames(df_2) <- paste0("Variable_", LETTERS)
 
 # Write Out to File -------------------------------------------------------
 
+# Create a directory called "/data/" at the project root (if it does not already 
+# exist)
+fs::dir_create(here::here("data"))
+
 # Write first data frame out to tab-delimited .txt file
 write.table(
   x = df_1, 
@@ -53,5 +57,3 @@ write.table(
   sep = "\t", 
   row.names = FALSE
 )
-
-
