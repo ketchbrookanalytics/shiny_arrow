@@ -14,7 +14,8 @@ vroom::vroom(
   list.files(
     path = here::here("data"), 
     full.names = TRUE
-  )
+  ), 
+  delim = "\t"
 ) %>% 
   arrow::write_parquet(
     here::here("data/all_of_the_data.parquet")
@@ -29,7 +30,17 @@ fs::file_info(
     full.names = TRUE
   )
 ) %>% 
-  dplyr::select(path, size)
+  dplyr::select(path, size) %>% 
+  dplyr::mutate(
+    file_type = stringr::str_extract(
+      string = path, 
+      pattern = "[^.]+$"   # extract text after period
+    )
+  ) %>% 
+  dplyr::group_by(file_type) %>% 
+  dplyr::summarise(
+    total_size = sum(size)
+  )
 
 # Remove the .txt files once we've created the .parquet files
 file.remove(
