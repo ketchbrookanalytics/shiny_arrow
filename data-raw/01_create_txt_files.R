@@ -8,6 +8,14 @@ library(fs)
 
 # Create Data Frames ------------------------------------------------------
 
+# Create 1,000 unique alphanumeric combinations to be used to filter the data by
+lookup_codes <- paste0(
+  sample(LETTERS, 1000, replace = TRUE), 
+  sample(1:9, 1000, replace = TRUE), 
+  sample(LETTERS, 1000, replace = TRUE), 
+  sample(1:1000)
+)
+
 # Create first 3MM row x 26 column data frame 
 df_1 <- matrix(
   data = runif(
@@ -18,7 +26,14 @@ df_1 <- matrix(
   nrow = 1000000, 
   ncol = 26
 ) %>% 
-  as.data.frame()
+  as.data.frame() %>% 
+  dplyr::mutate(
+    Item_Code = sample(
+      lookup_codes, 
+      size = 1000000, 
+      replace = TRUE
+    )
+  )
 
 # Create second 3MM row x 26 column data frame 
 df_2 <- matrix(
@@ -30,11 +45,18 @@ df_2 <- matrix(
   nrow = 1000000, 
   ncol = 26
 ) %>% 
-  as.data.frame()
+  as.data.frame() %>% 
+  dplyr::mutate(
+    Item_Code = sample(
+      lookup_codes, 
+      size = 1000000, 
+      replace = TRUE
+    )
+  )
 
 # Change the column names for each data frame to "Variable_A", "Variable_B", ...
-colnames(df_1) <- paste0("Variable_", LETTERS)
-colnames(df_2) <- paste0("Variable_", LETTERS)
+colnames(df_1)[1:26] <- paste0("Variable_", LETTERS)
+colnames(df_2)[1:26] <- paste0("Variable_", LETTERS)
 
 
 # Write Out to File -------------------------------------------------------
