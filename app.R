@@ -1,6 +1,17 @@
+## Developed by: 
+##   Michael Thomas
+##   Chief Data Scientist
+##   Ketchbrook Analytics
+## Contact:  MTHOMAS@KETCHBROOKANALYTICS.COM
+
+
 library(shiny)
-library(arrow)
-library(dplyr)
+library(shinythemes)   # simple way to use bootstrap UI theme
+library(emo)   # emojis (for app header)
+library(arrow)   # read data from parquet
+library(dplyr)   # ETL
+library(reactable)   # interactive data tables
+library(waiter)   # custom loading screens
 
 
 data <- arrow::read_parquet(
@@ -9,24 +20,84 @@ data <- arrow::read_parquet(
 )
 
 
-
-ui <- shiny::fluidPage(
+# Build the front-end UI
+ui <- shiny::navbarPage(
   
-  # Create a UI drop-down menu...
-  shiny::selectizeInput(
-    inputId = "choose_item_code", 
-    label = NULL, 
-    choices = NULL, 
-    selected = character(0), 
-    options = list(
-      placeholder = "Choose One...",
-      onInitialize = I('function() { this.setValue(""); }')
+  title = paste0("{arrow} + {shiny} ", emo::ji(keyword = "heart")), 
+  
+  theme = shinythemes::shinytheme(theme = "cerulean"),
+  
+  shiny::tabPanel(
+    
+    title = "Home",
+    
+    waiter::use_waiter(), 
+    
+    shiny::fluidRow(
+      
+      shiny::column(
+        width = 4, 
+        
+        # Create a UI drop-down menu...
+        shiny::selectizeInput(
+          inputId = "choose_item_code", 
+          label = paste0("Select an \"Item Code\" to View Related Data"), 
+          choices = NULL, 
+          selected = character(0), 
+          options = list(
+            placeholder = "Choose One...",
+            onInitialize = I('function() { this.setValue(""); }')
+          )
+        ), 
+        
+        shiny::br(), 
+        
+        shiny::actionButton(
+          inputId = "apply_item_code_btn", 
+          class = "float-right", 
+          label = "Apply"
+        )
+        
+      ), 
+      
+      shiny::column(
+        width = 8
+      )
+      
+    ), 
+    
+    shiny::hr(), 
+    
+    shiny::fluidRow(
+      
+      shiny::column(
+        width = 12, 
+        
+        reactable::reactableOutput(
+          outputId = "tbl"
+        )
+        
+      )
+      
     )
+    
   ), 
+  
+  shiny::tabPanel(
+    
+    title = "About"
+    
+  )
   
 )
 
+# Build the back-end Server
 server <- function(input, output, session) {
+  
+  # Build loading screen
+  w <- waiter::Waiter$new(
+    html = "Querying Data..."
+  )
   
   # Initiate a 'reactiveValues' object
   rctv <- shiny::reactiveValues()
@@ -57,10 +128,16 @@ server <- function(input, output, session) {
   
   
   # When an Item Code is selected...
-  shiny::observeEvent(input$choose_item_code, {
+  shiny::observeEvent(input$apply_item_code_btn, {
     
-    # Require that an Item Code has been selected
-    shiny::req(rctv$selected_item_code)
+    # Require that a valid Item Code has been selected
+    shiny::req(input$choose_item_code != "")
+    
+    w$show()
+    
+    Sys.sleep(1)
+    
+    rctv$selected_item_code <- input$choose_item_code
     
     # Capture the filtered data based upon the UI selection
     rctv$filtered_data <- data %>% 
@@ -72,6 +149,42 @@ server <- function(input, output, session) {
   
   
   # TODO: build a ggplot or something to display the selected observations
+  
+  # Build an interactive data table using the 'filtered_data' data frame
+  output$tbl <- reactable::renderReactable({
+    
+    shiny::req(rctv$filtered_data)
+    
+    tbl <- reactable::reactable(
+      
+      data = rctv$filtered_data %>% 
+        dplyr::relocate(
+          Item_Code, 
+          .before = tidyselect::everything()
+        ), 
+      
+      defaultColDef = reactable::colDef(
+        cell = function(value) {
+          round(value, 3)
+        }
+      ), 
+      
+      columns = list(
+        Item_Code = reactable::colDef(
+          align = "center", 
+          cell = function(value) {
+            value
+          }
+        )
+      )
+      
+    )
+    
+    w$hide()
+    
+    return(tbl)
+    
+  })
   
   
   
