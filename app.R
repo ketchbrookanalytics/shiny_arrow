@@ -38,30 +38,56 @@ ui <- shiny::navbarPage(
       shiny::column(
         width = 4, 
         
-        # Create a UI drop-down menu...
-        shiny::selectizeInput(
-          inputId = "choose_item_code", 
-          label = paste0("Select an \"Item Code\" to View Related Data"), 
-          choices = NULL, 
-          selected = character(0), 
-          options = list(
-            placeholder = "Choose One...",
-            onInitialize = I('function() { this.setValue(""); }')
+        shiny::wellPanel(
+          
+          # Create a UI drop-down menu...
+          shiny::selectizeInput(
+            inputId = "choose_item_code", 
+            label = paste0("Select an \"Item Code\" to View Related Data"), 
+            choices = NULL, 
+            selected = character(0), 
+            options = list(
+              placeholder = "Choose One...",
+              onInitialize = I('function() { this.setValue(""); }')
+            )
+          ), 
+          
+          shiny::br(), 
+          
+          shiny::div(
+            class = "float-right", 
+            shiny::actionButton(
+              inputId = "apply_item_code_btn", 
+              class = "float-right", 
+              label = "Apply"
+            )
           )
-        ), 
-        
-        shiny::br(), 
-        
-        shiny::actionButton(
-          inputId = "apply_item_code_btn", 
-          class = "float-right", 
-          label = "Apply"
+          
         )
         
       ), 
       
       shiny::column(
-        width = 8
+        width = 8, 
+        
+        shiny::wellPanel(
+          
+          shiny::h3("How it works:"), 
+          
+          shiny::br(), 
+          
+          shiny::p(
+            paste0(
+              "When the user selects an Item Code and clicks \"Apply\", that ", 
+              "Item Code is sent to the server to be used to generate a ", 
+              "reactive data frame via "
+            )
+          ), 
+          
+          shiny::code("dplyr::filter(Item_Code == [Selectd Item Code])")
+          
+        )
+        
       )
       
     ), 
@@ -85,7 +111,30 @@ ui <- shiny::navbarPage(
   
   shiny::tabPanel(
     
-    title = "About"
+    title = "About", 
+    
+    shiny::fluidRow(
+      
+      shiny::column(
+        width = 12, 
+        
+        shiny::div(
+          class = "jumbotron", 
+          shiny::h1("Curious to Learn More?"), 
+          shiny::p(
+            class = "lead", 
+            "Check out what else we do at Ketchbrook Analytics."
+          ), 
+          shiny::a(
+            class = "btn btn-info btn-lg", 
+            href = "https://www.ketchbrookanalytics.com/", 
+            target = "_blank", 
+            "Visit Us"
+          )
+        )
+        
+      )
+    )
     
   )
   
@@ -96,7 +145,10 @@ server <- function(input, output, session) {
   
   # Build loading screen
   w <- waiter::Waiter$new(
-    html = "Querying Data..."
+    html = shiny::tagList(
+      "Querying Data...", 
+      waiter::spin_ball()
+    )
   )
   
   # Initiate a 'reactiveValues' object
