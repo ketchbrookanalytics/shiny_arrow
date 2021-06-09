@@ -6,7 +6,29 @@
 <!-- badges: start -->
 <!-- badges: end -->
 
-Some description about what this whole topic is about…
+Shiny apps are an incredible tool for bringing data science to life,
+communicating your work with non-technical stakeholders, or allowing
+self-service data exploration for an audience. One of the tricky parts
+about managing shiny apps is keeping them from taking up a lot of space
+on the server they are deployed on, especially when it is necessary to
+include the data as part of the app (as opposed to querying an external
+database).
+
+As your data becomes *“big”*, moving from traditional record-oriented
+file types (e.g., *.csv*, *.txt*, etc.) to more modern column-oriented
+file types (*.parquet*) can drastically reduce the size of the file
+containing your data. This is where the [{arrow}]() package can help.
+
+The **{arrow}** package provides two major benefits:
+
+1.  It has the ability to read & write *.parquet* files (among other
+    file types)
+2.  You can query the data in that file *before* bringing it into an R
+    data frame, using **{dplyr}** verbs, which provides for dramatic
+    speed improvements
+
+This repository contains an [example shiny app](app.R) demonstrating how
+to accomplish this.
 
 ## Installation
 
