@@ -16,15 +16,15 @@ lookup_codes <- paste0(
   sample(1:1000)
 )
 
-# Create first 3MM row x 26 column data frame 
+# Create first 3MM row x 10 column data frame 
 df_1 <- matrix(
   data = runif(
-    n = 1000000 * 26, 
+    n = 1000000 * 10, 
     min = 1, 
     max = 100
   ), 
   nrow = 1000000, 
-  ncol = 26
+  ncol = 10
 ) %>% 
   as.data.frame() %>% 
   dplyr::mutate(
@@ -35,15 +35,15 @@ df_1 <- matrix(
     )
   )
 
-# Create second 3MM row x 26 column data frame 
 df_2 <- matrix(
   data = rnorm(
-    n = 1000000 * 26, 
+ # Create second 3MM row x 10 column data frame 
+   n = 1000000 * 10, 
     mean = 50, 
     sd = 20
   ), 
   nrow = 1000000, 
-  ncol = 26
+  ncol = 10
 ) %>% 
   as.data.frame() %>% 
   dplyr::mutate(
@@ -55,8 +55,8 @@ df_2 <- matrix(
   )
 
 # Change the column names for each data frame to "Variable_A", "Variable_B", ...
-colnames(df_1)[1:26] <- paste0("Variable_", LETTERS)
-colnames(df_2)[1:26] <- paste0("Variable_", LETTERS)
+colnames(df_1)[1:10] <- paste0("Variable_", LETTERS[1:10])
+colnames(df_2)[1:10] <- paste0("Variable_", LETTERS[1:10])
 
 
 # Write Out to File -------------------------------------------------------
