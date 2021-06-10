@@ -84,7 +84,7 @@ ui <- shiny::navbarPage(
             )
           ), 
           
-          shiny::code("dplyr::filter(Item_Code == [Selectd Item Code])")
+          shiny::code("dplyr::filter(Item_Code == [Selected Item Code])")
           
         )
         
