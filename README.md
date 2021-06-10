@@ -47,3 +47,32 @@ desktop:
     the mock data
 6.  Open the [app.R](app.R) file and execute the code in that script to
     launch the app
+
+------------------------------------------------------------------------
+
+## Session Info
+
+``` r
+sessionInfo()
+#> R version 4.0.3 (2020-10-10)
+#> Platform: x86_64-w64-mingw32/x64 (64-bit)
+#> Running under: Windows 10 x64 (build 19042)
+#> 
+#> Matrix products: default
+#> 
+#> locale:
+#> [1] LC_COLLATE=English_United States.1252 
+#> [2] LC_CTYPE=English_United States.1252   
+#> [3] LC_MONETARY=English_United States.1252
+#> [4] LC_NUMERIC=C                          
+#> [5] LC_TIME=English_United States.1252    
+#> 
+#> attached base packages:
+#> [1] stats     graphics  grDevices datasets  utils     methods   base     
+#> 
+#> loaded via a namespace (and not attached):
+#>  [1] compiler_4.0.3    magrittr_2.0.1    htmltools_0.5.1.1 tools_4.0.3      
+#>  [5] yaml_2.2.1        stringi_1.5.3     rmarkdown_2.8     knitr_1.33       
+#>  [9] stringr_1.4.0     xfun_0.23         digest_0.6.27     rlang_0.4.11     
+#> [13] renv_0.12.5       evaluate_0.14
+```
