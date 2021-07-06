@@ -72,9 +72,16 @@ ui <- shiny::navbarPage(
         
         shiny::wellPanel(
           
-          shiny::h3("How it works:"), 
+          shiny::h4("How it works:"), 
           
-          shiny::br(), 
+          shiny::p(
+            paste0(
+              "The back-end dataset behind this app consists of 1 million rows ", 
+              "of data across 11 variables. The 'Item_Code' variable contains ", 
+              "1,000 unique alphanumeric codes, which must be individually ", 
+              "selected to view the related (filtered) data."
+            )
+          ), 
           
           shiny::p(
             paste0(
