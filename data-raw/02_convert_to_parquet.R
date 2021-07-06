@@ -18,7 +18,8 @@ vroom::vroom(
   delim = "\t"
 ) %>% 
   arrow::write_parquet(
-    here::here("data/all_of_the_data.parquet")
+    here::here("data/all_of_the_data.parquet"), 
+    compression = "uncompressed"
   )
 
 # Show that the .parquet file containing ALL of the data is smaller (takes up
