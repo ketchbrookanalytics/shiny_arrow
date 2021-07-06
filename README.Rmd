@@ -25,8 +25,7 @@ The **{arrow}** package provides two major benefits:
 1. It has the ability to read & write *.parquet* files (among other file types)
 2. You can query the data in that file *before* bringing it into an R data frame, using **{dplyr}** verbs, which provides for dramatic speed improvements
 
-This repository contains an [example shiny app](app.R) demonstrating how to accomplish this.
-
+This repository contains an [example shiny app](app.R) demonstrating how to accomplish this. This app is also [live on shinyapps.io](https://ketchbrookanalytics.shinyapps.io/shiny_arrow/).
 
 ## Installation
 

@@ -76,7 +76,7 @@ ui <- shiny::navbarPage(
           
           shiny::p(
             paste0(
-              "The back-end dataset behind this app consists of 1 million rows ", 
+              "The back-end dataset behind this app consists of 2 million rows ", 
               "of data across 11 variables. The 'Item_Code' variable contains ", 
               "1,000 unique alphanumeric codes, which must be individually ", 
               "selected to view the related (filtered) data."
@@ -91,7 +91,16 @@ ui <- shiny::navbarPage(
             )
           ), 
           
-          shiny::code("dplyr::filter(Item_Code == [Selected Item Code])")
+          shiny::code("dplyr::filter(Item_Code == [Selected Item Code])"), 
+          
+          shiny::br(), 
+          shiny::br(), 
+          
+          shiny::a(
+            href = "https://github.com/mthomas-ketchbrook/shiny_arrow/blob/main/app.R", 
+            target = "_blank", 
+            "Browse App Source Code"
+          )
           
         )
         

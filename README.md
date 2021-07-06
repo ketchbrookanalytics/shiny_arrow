@@ -28,7 +28,8 @@ The **{arrow}** package provides two major benefits:
     speed improvements
 
 This repository contains an [example shiny app](app.R) demonstrating how
-to accomplish this.
+to accomplish this. This app is also [live on
+shinyapps.io](https://ketchbrookanalytics.shinyapps.io/shiny_arrow/).
 
 ## Installation
 
